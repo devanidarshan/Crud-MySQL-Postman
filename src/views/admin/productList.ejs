@@ -68,10 +68,44 @@
             td:nth-of-type(4):before { content: "Price"; }
             td:nth-of-type(5):before { content: "Quantity"; }
         }
+
+        .role-message {
+            text-align: center;
+            font-size: 1.5em;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .role-message strong {
+            color: #1b3977;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .no-role {
+            text-align: center;
+            color: #d9534f;
+            font-style: italic;
+        }
+        
     </style>
 </head>
 <body>
     <h1>Admin Product List</h1>
+
+    <% if (role) { %>
+        <p class="role-message">Your Role is: <strong><%=role %></strong></p>
+    <% } else { %>
+        <p class="no-role">Role not provided.</p>
+    <% } %>
+
+    <% if (email) { %>
+        <p class="role-message">Your Email is: <strong><%=email %></strong></p>
+    <% } else { %>
+        <p class="no-role">Email not provided.</p>
+    <% } %>
+
+
     <table>
         <thead>
             <tr>
