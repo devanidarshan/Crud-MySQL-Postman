@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background: #f2f2f2; }
+        .quantity-controls { display: flex; align-items: center; }
+        .quantity-controls button { margin: 0 5px; }
+        .quantity-display { width: 50px; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Product List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th> <a href="/api/logout-user" class="signout-link">Sign Out</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% products.forEach(product => { %>
+                <tr>
+                    <td><%= product.id %></td>
+                    <td><%= product.name %></td>
+                    <td><%= product.description %></td>
+                    <td><%= product.price %></td>
+                    <td>
+                        <form action="/api/add-to-cart?id=<%= product.id %>" method="POST" style="display: flex; align-items: center;">
+                            <input type="hidden" name="productId" value="<%= product.id %>">
+                            <input type="text" name="name" value="<%= product.name %>" required>
+                            <input type="number" name="price" value="<%= product.price %>" required>
+                            <button type="button" onclick="decreaseQuantity(<%= product.id %>)">-</button>
+                            <input type="number" id="quantity-<%= product.id %>" name="quantity" class="quantity-display" value="<%= product.quantity %>" required>
+                            <button type="button" onclick="increaseQuantity(<%= product.id %>)">+</button>
+                            <button type="submit">Cart</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+    <script>
+        function decreaseQuantity(productId) {
+            const quantityInput = document.getElementById(`quantity-${productId}`);
+            let currentQuantity = parseInt(quantityInput.value);
+            currentQuantity = Math.max(0, currentQuantity - 1); 
+            quantityInput.value = currentQuantity;
+        }
+
+        function increaseQuantity(productId) {
+            const quantityInput = document.getElementById(`quantity-${productId}`);
+            let currentQuantity = parseInt(quantityInput.value);
+            quantityInput.value = currentQuantity + 1; 
+        }
+    </script>
+</body>
+</html>
