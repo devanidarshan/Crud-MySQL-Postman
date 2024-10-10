@@ -533,6 +533,9 @@ exports.signOut = (req, res) => {
   // CLEAR ROLE 
   res.clearCookie('role', { httpOnly: true });
 
+    // CLEAR EMAIL
+    res.clearCookie('email', { httpOnly: true });
+
   // res.status(200).json({ message: 'Successfully signed out...' });
   res.redirect('/api/register-user');
 };
