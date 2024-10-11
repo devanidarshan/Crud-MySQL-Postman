@@ -1,17 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-        th { background: #f2f2f2; }
-        .quantity-controls { display: flex; align-items: center; }
-        .quantity-controls button { margin: 0 5px; }
-        .quantity-display { width: 50px; text-align: center; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #f2f2f2;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-controls button {
+            margin: 0 5px;
+        }
+
+        .quantity-display {
+            width: 50px;
+            text-align: center;
+        }
 
         .role-message {
             text-align: center;
@@ -32,70 +62,129 @@
             font-style: italic;
         }
 
+        .search-bar {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            width: 300px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s;
+        }
+
+        .search-bar input:focus {
+            border-color: #1b3977;
+            outline: none;
+        }
     </style>
 </head>
+
 <body>
     <h1>Product List</h1>
 
-      <% if (role) { %>
-        <p class="role-message">Your Role is: <strong><%=role %></strong></p>
-    <% } else { %>
-        <p class="no-role">Role not provided.</p>
-    <% } %>
+    <% if (role) { %>
+        <p class="role-message">Your Role is: <strong>
+                <%=role %>
+            </strong></p>
+        <% } else { %>
+            <p class="no-role">Role not provided.</p>
+            <% } %>
 
-    <% if (email) { %>
-        <p class="role-message">Your Email is: <strong><%=email %></strong></p>
-    <% } else { %>
-        <p class="no-role">Email not provided.</p>
-    <% } %>
+                <% if (email) { %>
+                    <p class="role-message">Your Email is: <strong>
+                            <%=email %>
+                        </strong></p>
+                    <% } else { %>
+                        <p class="no-role">Email not provided.</p>
+                        <% } %>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th> <a href="/api/signout-user" class="signout-link">Sign Out</a></th>
-            </tr>
-        </thead>
-        <tbody>
-            <% products.forEach(product => { %>
-                <tr>
-                    <td><%= product.id %></td>
-                    <td><%= product.name %></td>
-                    <td><%= product.description %></td>
-                    <td><%= product.price %></td>
-                    <td>
-                        <form action="/api/add-to-cart?id=<%= product.id %>" method="POST" style="display: flex; align-items: center;">
-                            <input type="hidden" name="productId" value="<%= product.id %>">
-                            <input type="text" name="name" value="<%= product.name %>" required>
-                            <input type="number" name="price" value="<%= product.price %>" required>
-                            <button type="button" onclick="decreaseQuantity(<%= product.id %>)">-</button>
-                            <input type="number" id="quantity-<%= product.id %>" name="quantity" class="quantity-display" value="<%= product.quantity %>" required>
-                            <button type="button" onclick="increaseQuantity(<%= product.id %>)">+</button>
-                            <button type="submit">Cart</button>
-                        </form>
-                    </td>
-                </tr>
-            <% }); %>
-        </tbody>
-    </table>
+                            <div class="search-bar" style="text-align: center;">
+                                <span style="margin-right: 10px; font-weight: bold;">Search as:</span>
+                                <input type="text" id="searchInput" placeholder="Search for products..."
+                                    onkeyup="filterProducts()">
+                            </div>
 
-    <script>
-        function decreaseQuantity(productId) {
-            const quantityInput = document.getElementById(`quantity-${productId}`);
-            let currentQuantity = parseInt(quantityInput.value);
-            currentQuantity = Math.max(0, currentQuantity - 1); 
-            quantityInput.value = currentQuantity;
-        }
 
-        function increaseQuantity(productId) {
-            const quantityInput = document.getElementById(`quantity-${productId}`);
-            let currentQuantity = parseInt(quantityInput.value);
-            quantityInput.value = currentQuantity + 1; 
-        }
-    </script>
+                            <table id="productTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th><a href="/api/signout-user" class="signout-link">Sign Out</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (products.length > 0) { %>
+                                        <% products.forEach(product => { %>
+                                            <tr>
+                                                <td><%= product.id %></td>
+                                                <td><%= product.name %></td>
+                                                <td><%= product.description %></td>
+                                                <td><%= product.price %></td>
+                                                <td>
+                                                    <form action="/api/add-to-cart?id=<%= product.id %>" method="POST" style="display: flex; align-items: center;">
+                                                        <input type="hidden" name="productId" value="<%= product.id %>">
+                                                        <input type="text" name="name" value="<%= product.name %>" required>
+                                                        <input type="number" name="price" value="<%= product.price %>" required>
+                                                        <button type="button" onclick="decreaseQuantity(<%= product.id %>)">-</button>
+                                                        <input type="number" id="quantity-<%= product.id %>" name="quantity" class="quantity-display" value="1" required>
+                                                        <button type="button" onclick="increaseQuantity(<%= product.id %>)">+</button>
+                                                        <button type="submit">Cart</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        <% }); %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="6" style="text-align: center;">Item Not Found.</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+
+                            <script>
+                                function filterProducts() {
+                                    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+                                    const productTable = document.getElementById('productTable');
+                                    const rows = productTable.getElementsByTagName('tr');
+
+                                    for (let i = 1; i < rows.length; i++) {
+                                        const cells = rows[i].getElementsByTagName('td');
+                                        let rowVisible = false;
+
+                                        for (let j = 1; j < cells.length - 1; j++) {
+                                            if (cells[j].innerText.toLowerCase().includes(searchInput)) {
+                                                rowVisible = true;
+                                                break;
+                                            }
+                                        }
+
+                                        rows[i].style.display = rowVisible ? '' : 'none';
+                                    }
+                                }
+
+                                function decreaseQuantity(productId) {
+                                    const quantityInput = document.getElementById(`quantity-${productId}`);
+                                    let currentQuantity = parseInt(quantityInput.value);
+                                    currentQuantity = Math.max(0, currentQuantity - 1);
+                                    quantityInput.value = currentQuantity;
+                                }
+
+                                function increaseQuantity(productId) {
+                                    const quantityInput = document.getElementById(`quantity-${productId}`);
+                                    let currentQuantity = parseInt(quantityInput.value);
+                                    quantityInput.value = currentQuantity + 1;
+                                }
+                            </script>
 </body>
+
 </html>
