@@ -24,10 +24,10 @@ productRoute.get('/add-product', addProductForm);
 productRoute.get('/buy-product', buyProductForm);
 
 // ADD PRODUCT
-productRoute.post('/add-product', userVerifyToken , validateAddProduct , addProduct);
+productRoute.post('/add-product', validateAddProduct , addProduct);
 
 // GET ALL PRODUCT
-productRoute.get('/get-all-product', userVerifyToken , validateGetAllProduct , getAllProduct);
+productRoute.get('/get-all-product', validateGetAllProduct , getAllProduct);
 
 // GET SPECIFIC PRODUCT
 productRoute.get('/get-product', userVerifyToken , validateGetProduct , getProduct);

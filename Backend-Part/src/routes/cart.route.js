@@ -4,12 +4,12 @@ const { userVerifyToken } = require('../helpers/userVerifyToken');
 const { addToCart , getAllCart, removeCart } = require('../controller/cart.controller');
 
 // ADD TO CART
-cartRoute.post('/add-to-cart' , userVerifyToken  , addToCart);
+cartRoute.post('/add-to-cart' , addToCart);
 
 // GET ALL CART
-cartRoute.get('/get-all-cart' , userVerifyToken  , getAllCart);
+cartRoute.get('/get-all-cart' , getAllCart);
 
 // REMOVE CART
-cartRoute.post('/remove-cart' , userVerifyToken  , removeCart);
+cartRoute.post('/remove-cart' , removeCart);
 
 module.exports = cartRoute;

@@ -1,13 +1,14 @@
 module.exports = {
-    reply: async function (res , errorcode , isError , message , data) {
+    reply: async function (res, errorcode, isError, message, data) {
         return res.status(200).json({
-            msg:message,
-            error:isError,
-            statusCode:errorcode,
-            data:data
+            msg: message,
+            error: isError,
+            statusCode: errorcode,
+            data: data
         });
     }
 };
+
 
 module.exports = {
     cookie: async function (req, res, next) {

@@ -4,6 +4,7 @@ const passport = require('passport');
 const passportConfig = require('./passport');
 const cookieParser = require('cookie-parser');
 const common = require('./common');
+const cors = require('cors');
 const path = require('path');
 
 const app = express();
@@ -16,6 +17,10 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+app.use(cors({
+  origin: 'http://localhost:5173' 
+}));
 
 // EJS TEMPLATE ENGINE
 app.set('view engine', 'ejs');

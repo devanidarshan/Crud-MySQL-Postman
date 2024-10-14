@@ -70,10 +70,10 @@ exports.validateRegisterUser = [
 // REGISTER USER
 exports.registerUser = async (req, res, next) => {
   // Validate inputs
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return common.reply(res, 400, true, 'Validation failed.');
-  }
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) {
+  //   return common.reply(res, 400, true, 'Validation failed.');
+  // }
 
   passport.authenticate('local-register', (err, user, info) => {
     if (err) {
@@ -81,9 +81,9 @@ exports.registerUser = async (req, res, next) => {
       return common.reply(res, 500, true, 'Internal Server Error...');
     }
 
-    if (!user) {
-      return common.reply(res, 400, true, info.message);
-    }
+    // if (!user) {
+    //   return common.reply(res, 400, true, info.message);
+    // }
 
     const data = {
       user: {
@@ -93,8 +93,8 @@ exports.registerUser = async (req, res, next) => {
         role: user.role
       }
     };
-    // return common.reply(res, 201, false, 'New User Added Successfully...', data);
-    res.redirect('login-user');
+    res.json({ message: 'New User Added Successfully...', StatusCode: 201, Error: false, data });
+    // res.redirect('login-user');
   })(req, res, next);
 };
 
@@ -143,16 +143,17 @@ exports.loginUser = (req, res, next) => {
     });
 
 
-    // Set user role in a cookie
-    res.cookie('email', user.email, {
-      httpOnly: true,
-      maxAge: 6000 * 60 * 100   // 10 hours
-    });
+    // // Set user role in a cookie
+    // res.cookie('email', user.email, {
+    //   httpOnly: true,
+    //   maxAge: 6000 * 60 * 100   // 10 hours
+    // });
 
     const data = {
       user: { id: user.id, name: user.name, email: user.email },
     };
     console.log(data);
+    // res.json({message:'User Login Successfully...', StatusCode:201 , Error:false ,  data});
 
     if (user.role === 'buyer') {
       res.redirect('/api/buy-product');
@@ -533,8 +534,8 @@ exports.signOut = (req, res) => {
   // CLEAR ROLE 
   res.clearCookie('role', { httpOnly: true });
 
-    // CLEAR EMAIL
-    res.clearCookie('email', { httpOnly: true });
+  // CLEAR EMAIL
+  res.clearCookie('email', { httpOnly: true });
 
   // res.status(200).json({ message: 'Successfully signed out...' });
   res.redirect('/api/register-user');

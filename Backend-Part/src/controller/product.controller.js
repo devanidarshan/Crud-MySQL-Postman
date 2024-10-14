@@ -35,44 +35,93 @@ exports.buyProductForm = (req, res) => {
 };
 
 
+// // ADD PRODUCT
+// exports.addProduct = async (req, res) => {
+//   // Validate inputs
+//   const errors = validationResult(req);
+//   if (!errors.isEmpty()) {
+//       return common.reply(res, 400, true, 'Validation failed.');
+//   }
+
+//   // const userId = req.user.userId;
+//   // console.log(userId);
+  
+//   const { name, description, price, quantity} = req.body;
+// // console.log(req.body.name , req.body.description , req.body.price , req.body.quantity);
+
+//   if (!name || !description || !price || !quantity) {
+//       // return common.reply(res, 400, true, 'All product fields are required.');
+//       res.json({message:"Product Field Are Required."});
+//   }
+  
+//  try {
+//       // Prepare new product data
+//       const newProduct = {
+//           name,
+//           description,
+//           price,
+//           quantity,
+//           // userId
+//       };
+//       console.log(newProduct);
+
+//       // SQL Query to insert product into the database
+//       const sql = 'INSERT INTO product (name, description, price, quantity , userId) VALUES (?, ?, ?, ?,?)';
+//       mysqlConnection.query(sql, [newProduct.name, newProduct.description, newProduct.price, newProduct.quantity ], (error, results) => {
+//           if (error) {
+//               console.error(error);
+//               // return common.reply(res, 500, true, 'Error adding product...');
+//           }
+
+//           // Response after successful product insertion
+//           const data = {
+//               product: {
+//                   // id: results.insertId,
+//                   name: newProduct.name,
+//                   description: newProduct.description,
+//                   price: newProduct.price,
+//                   quantity: newProduct.quantity,
+//                   // userId: newProduct.userId
+//               },
+//           };
+//           // return common.reply(res, 201, false, 'Product added successfully.', data);
+//           res.redirect('/api/get-all-product');
+//       });
+//   } catch (error) {
+//       console.error(error);
+//       // return common.reply(res, 500, true, 'Internal Server Error...');
+//       res.json({message:"Internal Server Error..."});
+//   }
+// };
+
 // ADD PRODUCT
 exports.addProduct = async (req, res) => {
   // Validate inputs
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-      return common.reply(res, 400, true, 'Validation failed.');
+      return res.status(400).json({ message: 'Validation failed.' });
   }
 
-  const userId = req.user.userId;
-  console.log(userId);
-  
-  const { name, description, price, quantity} = req.body;
-// console.log(req.body.name , req.body.description , req.body.price , req.body.quantity);
+  const { name, description, price, quantity } = req.body;
 
+  // Validate required fields
   if (!name || !description || !price || !quantity) {
-      return common.reply(res, 400, true, 'All product fields are required.');
+      return res.status(400).json({ message: "All product fields are required." });
   }
-  
- try {
+
+  try {
       // Prepare new product data
-      const newProduct = {
-          name,
-          description,
-          price,
-          quantity,
-          userId
-      };
+      const newProduct = { name, description, price, quantity };
       console.log(newProduct);
 
       // SQL Query to insert product into the database
-      const sql = 'INSERT INTO product (name, description, price, quantity , userId) VALUES (?, ?, ?, ?,?)';
-      mysqlConnection.query(sql, [newProduct.name, newProduct.description, newProduct.price, newProduct.quantity , newProduct.userId], (error, results) => {
+      const sql = 'INSERT INTO product (name, description, price, quantity) VALUES (?, ?, ?, ?)';
+      mysqlConnection.query(sql, [newProduct.name, newProduct.description, newProduct.price, newProduct.quantity], (error, results) => {
           if (error) {
               console.error(error);
-              // return common.reply(res, 500, true, 'Error adding product...');
+              return res.status(500).json({ message: 'Error adding product.' });
           }
 
-          // Response after successful product insertion
           const data = {
               product: {
                   id: results.insertId,
@@ -80,17 +129,16 @@ exports.addProduct = async (req, res) => {
                   description: newProduct.description,
                   price: newProduct.price,
                   quantity: newProduct.quantity,
-                  userId: newProduct.userId
               },
           };
-          // return common.reply(res, 201, false, 'Product added successfully.', data);
-          res.redirect('/api/get-all-product');
+          res.status(201).json({ success: true, message: 'Product added successfully.', data });
       });
   } catch (error) {
       console.error(error);
-      return common.reply(res, 500, true, 'Internal Server Error...');
+      return res.status(500).json({ message: "Internal Server Error..." });
   }
 };
+
 
 
   // Validation Middleware
@@ -121,10 +169,12 @@ exports.getAllProduct = async (req, res) => {
         }
   
         // RESPOND
-        // const data = results;
-        // return common.reply(res, 200, false, 'Products retrieved successfully...', data);
+        const data = results;
+        console.log(results);
+        
+        res.json({message: 'Products retrieved successfully...', data});
         // (e.g., allproduct.ejs)
-         res.render('allproduct', { products: results });
+        //  res.render('allproduct', { products: results });
       });
   
     } catch (error) {

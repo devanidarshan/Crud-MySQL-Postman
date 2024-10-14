@@ -55,19 +55,22 @@ exports.getAllCart = (req, res) => {
 
 
 // REMOVE CART
-exports.removeCart = (req , res) => {
-    const itemId = req.body.id;
+exports.removeCart = (req, res) => {
+    const { userId, productId } = req.body;
 
-    if (!itemId) {
-        return res.status(400).send('Item ID is required.');
+    if (!productId) {
+        return res.status(400).json({ message: 'Item ID is required.' });
     }
-    const query = 'DELETE FROM cart WHERE id = ?';
-    mysqlConnection.query(query, [itemId], (err, results) => {
+
+    const deleteQuery = 'DELETE FROM cart WHERE productId = ? AND buyerId = ?';
+    mysqlConnection.query(deleteQuery, [productId, userId], (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).send('Error removing item from cart.');
+            return res.status(500).json({ message: 'Error removing item from cart.' });
         }
-        res.redirect('back'); 
+
+        res.json({ message: 'Item removed from cart successfully.' , productId});
     });
 };
+
 
