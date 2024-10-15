@@ -179,7 +179,8 @@ exports.getAllProduct = async (req, res) => {
   
     } catch (error) {
       console.log(error);
-      return common.reply(res, 500, true, 'Internal Server Error...');
+      // return common.reply(res, 500, true, 'Internal Server Error...');
+      res.json({message:"Internal Server Error..."});
     }
   };
 

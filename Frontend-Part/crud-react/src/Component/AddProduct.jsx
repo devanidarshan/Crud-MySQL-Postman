@@ -48,9 +48,9 @@ export default function AddProduct({ role, email }) {
     };
 
     return (
-        <div className="bg-gray-100 min-h-screen flex items-center justify-center p-5">
+        <div className="bg-gray-100 h-[830px] flex items-center justify-center p-5">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h1 className="text-2xl font-semibold text-center mb-6">Add Product</h1>
+                <h1 className="text-3xl font-semibold text-center mb-6 underline underline-offset-4">Add Product</h1>
 
                 {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 

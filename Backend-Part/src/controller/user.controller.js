@@ -153,7 +153,7 @@ exports.loginUser = (req, res, next) => {
       user: { id: user.id, name: user.name, email: user.email },
     };
     console.log(data);
-    // res.json({message:'User Login Successfully...', StatusCode:201 , Error:false ,  data});
+    // res.json({message:'User Login Successfully...', StatusCode:201 , Error:false ,  token , data});
 
     if (user.role === 'buyer') {
       res.redirect('/api/buy-product');

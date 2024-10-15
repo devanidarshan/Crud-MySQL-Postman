@@ -116,33 +116,33 @@ export default function GetAllProduct({ role, email }) {
           placeholder="Enter product name..."
           value={searchTerm}
           onChange={handleSearch}
-          className="p-2 rounded border border-gray-300 w-[500px] focus:outline-none focus:border-blue-500"
+          className="p-2 rounded border border-gray-300 w-[400px] focus:outline-none focus:border-blue-500"
         />
       </div>
 
-      <table className="min-w-full bg-white rounded-lg shadow overflow-hidden">
-        <thead className="bg-black text-white">
+      <table className="min-w-full bg-white rounded-lg shadow-lg overflow-hidden h-[605px]">
+        <thead className="bg-gray-800 text-white">
           <tr>
-            <th className="py-3 px-4 border-b">ID</th>
-            <th className="py-3 px-4 border-b">Name</th>
-            <th className="py-3 px-4 border-b">Description</th>
-            <th className="py-3 px-4 border-b">Price</th>
-            <th className="py-3 px-4 border-b">Quantity</th>
-            <th className="py-3 px-4 border-b">Actions</th>
+            <th className="py-3 px-4 border-b border-gray-300 text-left">ID</th>
+            <th className="py-3 px-4 border-b border-gray-300 text-left">Name</th>
+            <th className="py-3 px-4 border-b border-gray-300 text-left">Description</th>
+            <th className="py-3 px-4 border-b border-gray-300 text-left">Price</th>
+            <th className="py-3 px-4 border-b border-gray-300 text-left">Quantity</th>
+            <th className="py-3 px-4 border-b border-gray-300 text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
           {filteredData.length > 0 ? (
             filteredData.map(product => (
-              <tr key={product.id} className="hover:bg-gray-200 transition duration-200">
-                <td className="py-2 px-4 border-b">{product.id}</td>
-                <td className="py-2 px-4 border-b">{product.name}</td>
-                <td className="py-2 px-4 border-b">{product.description}</td>
-                <td className="py-2 px-4 border-b">{product.price}</td>
-                <td className="py-2 px-4 border-b">
-                  <div className="flex items-center">
+              <tr key={product.id} className="hover:bg-gray-100 transition duration-200">
+                <td className="py-2 px-4 border-b border-gray-300">{product.id}</td>
+                <td className="py-2 px-4 border-b border-gray-300">{product.name}</td>
+                <td className="py-2 px-4 border-b border-gray-300">{product.description}</td>
+                <td className="py-2 px-4 border-b border-gray-300">{product.price}</td>
+                <td className="py-2 px-4 border-b border-gray-300">
+                  <div className="flex items-center  space-x-2">
                     <button
-                      className="bg-blue-500 text-white rounded-l p-1"
+                      className="bg-blue-500 text-white rounded p-1 hover:bg-blue-600 transition"
                       onClick={() => handleQuantityChange(product.id, -1)}
                     >
                       -
@@ -154,36 +154,39 @@ export default function GetAllProduct({ role, email }) {
                       className="text-center border border-gray-300 w-16"
                     />
                     <button
-                      className="bg-blue-500 text-white rounded-r p-1"
+                      className="bg-blue-500 text-white rounded p-1 hover:bg-blue-600 transition"
                       onClick={() => handleQuantityChange(product.id, 1)}
                     >
                       +
                     </button>
                   </div>
                 </td>
-                <td className="py-2 px-4 border-b">
-                  <button
-                    className="bg-green-500 text-white p-1 rounded hover:bg-green-600 transition"
-                    onClick={() => addToCart(product)}
-                  >
-                    Add to Cart
-                  </button>
-                  <button
-                    className="bg-red-500 text-white p-1 rounded hover:bg-red-600 transition ml-4"
-                    onClick={() => removeCart(product.id)}
-                  >
-                    Remove Cart
-                  </button>
+                <td className="py-2 px-4 border-b border-gray-300">
+                  <div className="flex space-x-2">
+                    <button
+                      className="bg-green-500 text-white p-1 rounded hover:bg-green-600 transition"
+                      onClick={() => addToCart(product)}
+                    >
+                      Add to Cart
+                    </button>
+                    <button
+                      className="bg-red-500 text-white p-1 rounded hover:bg-red-600 transition"
+                      onClick={() => removeCart(product.id)}
+                    >
+                      Remove Cart
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="text-center py-4">Product Not Found</td>
+              <td colSpan="6" className="text-center text-[30px] font-semibold text-gray-600 py-4">Product Not Found</td>
             </tr>
           )}
         </tbody>
       </table>
+
     </div>
   );
 }
