@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Cookies  from "js-cookie";
 
 export default function GetAllProduct({ role, email }) {
   const [data, setData] = useState([]);
@@ -7,11 +8,15 @@ export default function GetAllProduct({ role, email }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState(null);
   const [cart, setCart] = useState({});
+  const [CookieData, setCookieData] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:7777/api/get-all-product');
+        const response = await axios.get('http://localhost:7777/api/get-all-product',{
+          withCredentials:true,
+        });
+
         setData(response.data.data || []);
         setFilteredData(response.data.data || []);
       } catch (err) {
@@ -21,6 +26,14 @@ export default function GetAllProduct({ role, email }) {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const Cookie = Cookies.get("cookieData");
+    if(Cookie){
+        const userData = JSON.parse(Cookie);
+        setCookieData(userData);
+    }
+},[])
 
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
@@ -46,12 +59,11 @@ export default function GetAllProduct({ role, email }) {
       console.log(`Added ${quantity} of ${product.name} to cart.`);
 
       try {
-        const userId = localStorage.getItem('userId');
         await axios.post('http://localhost:7777/api/add-to-cart', {
-          userId,
           productId: product.id,
           quantity,
-        });
+        }, { withCredentials: true }); 
+
         setCart(prevCart => ({ ...prevCart, [product.id]: 0 }));
       } catch (err) {
         console.error('Error adding to cart in database:', err);
@@ -65,31 +77,32 @@ export default function GetAllProduct({ role, email }) {
   // REMOVE CART
   const removeCart = async (productId) => {
     try {
-      const userId = localStorage.getItem('userId');
-
-      console.log('Removing item:', { userId, productId });
-
-      const response = await axios.post('http://localhost:7777/api/remove-cart', {
-        userId,
-        productId,
-      });
-
-      console.log(response.data);
-
-      if (response.data.message === 'Item removed from cart successfully.') {
-        setCart(prevCart => {
-          const newCart = { ...prevCart };
-          delete newCart[productId];
-          return newCart;
+        const response = await axios.post('http://localhost:7777/api/remove-cart', {
+            productId, 
+        }, {
+            withCredentials: true, 
         });
-      } else {
-        alert(response.data.message);
-      }
+
+        console.log(response.data);
+
+        if (response.data.message === 'Item removed from cart successfully.') {
+            console.log('Removed successfully:', productId);
+            setCart(prevCart => {
+                const newCart = { ...prevCart };
+                delete newCart[productId]; 
+                return newCart; 
+            });
+        } else {
+            console.log('Error:', response.data.message); 
+        }
     } catch (err) {
-      console.error('Error removing from cart in database:', err.response ? err.response.data : err);
-      alert('Failed to remove item from cart.');
+        console.error('Error removing from cart in database:', err.response ? err.response.data : err);
     }
-  };
+};
+
+
+
+
 
   return (
     <div className="max-w-8xl mx-auto p-6 bg-gray-600 rounded-lg shadow-lg">
@@ -97,15 +110,15 @@ export default function GetAllProduct({ role, email }) {
 
       {error && <div className="text-red-500 text-center mb-4">Error: {error.message}</div>}
 
-      {role && (
+      {CookieData.role && (
         <p className="text-center text-lg text-black text-[20px] mb-4">
-          Your Role is: <strong className="text-blue-300 underline">{role}</strong>
+          Your Role is: <strong className="text-blue-300 underline">{CookieData.role}</strong>
         </p>
       )}
 
-      {email && (
+      {CookieData.email && (
         <p className="text-center text-lg text-black text-[20px] mb-4">
-          Your Email is: <strong className="text-blue-300 underline">{email}</strong>
+          Your Email is: <strong className="text-blue-300 underline">{CookieData.email}</strong>
         </p>
       )}
 

@@ -4,8 +4,8 @@ const mysqlConnection = require('../../connection');
 // ADD TO CART
 exports.addToCart = (req, res) => {
     const { productId, quantity } = req.body;
-    const buyerId = req.query.id;
-    // console.log(buyerId);
+    const buyerId = req.user.userId;
+    console.log(buyerId);
 
     if (!productId || !quantity) {
         return res.status(400).json({ message: 'Product ID and quantity are required.' });
@@ -53,24 +53,34 @@ exports.getAllCart = (req, res) => {
     });
 };
 
-
 // REMOVE CART
 exports.removeCart = (req, res) => {
-    const { userId, productId } = req.body;
+    const { productId } = req.body;
+    const buyerId = req.user.userId; 
+    console.log(buyerId);
 
     if (!productId) {
-        return res.status(400).json({ message: 'Item ID is required.' });
+        return res.status(400).json({ message: 'Product ID is required.' });
     }
 
     const deleteQuery = 'DELETE FROM cart WHERE productId = ? AND buyerId = ?';
-    mysqlConnection.query(deleteQuery, [productId, userId], (err, result) => {
+    mysqlConnection.query(deleteQuery, [productId, buyerId], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: 'Error removing item from cart.' });
         }
 
-        res.json({ message: 'Item removed from cart successfully.' , productId});
+        // Fetch the updated cart items
+        const fetchQuery = 'SELECT * FROM cart WHERE buyerId = ?';
+        mysqlConnection.query(fetchQuery, [buyerId], (err, cartItems) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: 'Error fetching cart items.' });
+            }
+            res.json(cartItems); 
+        });
     });
 };
+
 
 

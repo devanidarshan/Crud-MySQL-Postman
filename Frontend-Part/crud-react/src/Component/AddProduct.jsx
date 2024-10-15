@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Cookies  from "js-cookie";
 
 export default function AddProduct({ role, email }) {
     const [productName, setName] = useState('');
@@ -8,6 +9,7 @@ export default function AddProduct({ role, email }) {
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
     const [error, setError] = useState('');
+    const [CookieData, setCookieData] = useState('');
     const [addedProduct, setAddedProduct] = useState(null);
     const navigate = useNavigate(); 
 
@@ -26,8 +28,8 @@ export default function AddProduct({ role, email }) {
                 description,
                 price,
                 quantity,
-            });
-            console.log(response);
+            }, { withCredentials: true }); 
+            console.log(response.data);
             
             if (response.data.success) {
                 setName('');
@@ -47,6 +49,14 @@ export default function AddProduct({ role, email }) {
         }
     };
 
+    useEffect(() => {
+        const Cookie = Cookies.get("cookieData");
+        if(Cookie){
+            const userData = JSON.parse(Cookie);
+            setCookieData(userData);
+        }
+    },[])
+
     return (
         <div className="bg-gray-100 h-[830px] flex items-center justify-center p-5">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -54,15 +64,15 @@ export default function AddProduct({ role, email }) {
 
                 {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
-                {role && (
+                {CookieData.role && (
                     <p className="text-center text-lg mb-4">
-                        Your Role is: <strong className="text-blue-600 underline">{role}</strong>
+                        Your Role is: <strong className="text-blue-600 underline">{CookieData.role}</strong>
                     </p>
                 )}
 
-                {email && (
+                {CookieData.email && (
                     <p className="text-center text-lg mb-4">
-                        Your Email is: <strong className="text-blue-600 underline">{email}</strong>
+                        Your Email is: <strong className="text-blue-600 underline">{CookieData.email}</strong>
                     </p>
                 )}
 

@@ -98,6 +98,9 @@ exports.buyProductForm = (req, res) => {
 exports.addProduct = async (req, res) => {
   // Validate inputs
   const errors = validationResult(req);
+  const userId = req.user.userId;
+  console.log(userId);
+  
   if (!errors.isEmpty()) {
       return res.status(400).json({ message: 'Validation failed.' });
   }
@@ -115,8 +118,8 @@ exports.addProduct = async (req, res) => {
       console.log(newProduct);
 
       // SQL Query to insert product into the database
-      const sql = 'INSERT INTO product (name, description, price, quantity) VALUES (?, ?, ?, ?)';
-      mysqlConnection.query(sql, [newProduct.name, newProduct.description, newProduct.price, newProduct.quantity], (error, results) => {
+      const sql = 'INSERT INTO product (name, description, price, quantity , userId) VALUES (?, ?, ?, ?,?)';
+      mysqlConnection.query(sql, [newProduct.name, newProduct.description, newProduct.price, newProduct.quantity,userId], (error, results) => {
           if (error) {
               console.error(error);
               return res.status(500).json({ message: 'Error adding product.' });

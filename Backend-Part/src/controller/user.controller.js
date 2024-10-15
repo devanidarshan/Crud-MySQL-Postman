@@ -136,11 +136,17 @@ exports.loginUser = (req, res, next) => {
       maxAge: 6000 * 60 * 100  // 10 hours
     });
 
-    // Set user role in a cookie
-    res.cookie('role', user.role, {
-      httpOnly: true,
-      maxAge: 6000 * 60 * 100   // 10 hours
-    });
+    // Cookie Data
+    const cookieData = {email:user.email , role:user.role};
+    res.cookie("cookieData" , JSON.stringify(cookieData) , {httpOnly:true});
+    console.log(cookieData);
+    
+
+    // // Set user role in a cookie
+    // res.cookie('role', user.role, {
+    //   httpOnly: true,
+    //   maxAge: 6000 * 60 * 100   // 10 hours
+    // });
 
 
     // // Set user role in a cookie
@@ -151,15 +157,15 @@ exports.loginUser = (req, res, next) => {
 
     const data = {
       user: { id: user.id, name: user.name, email: user.email },
-    };
+      token , cookieData };
     console.log(data);
-    // res.json({message:'User Login Successfully...', StatusCode:201 , Error:false ,  token , data});
+    res.json({message:'User Login Successfully...', StatusCode:201 , Error:false ,  token , data});
 
-    if (user.role === 'buyer') {
-      res.redirect('/api/buy-product');
-    } else {
-      res.redirect('/api/add-product');
-    };
+    // if (user.role === 'buyer') {
+    //   res.redirect('/api/buy-product');
+    // } else {
+    //   res.redirect('/api/add-product');
+    // };
   })(req, res, next);
 };
 
