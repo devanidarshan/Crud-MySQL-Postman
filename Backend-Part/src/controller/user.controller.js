@@ -169,8 +169,6 @@ exports.loginUser = (req, res, next) => {
   })(req, res, next);
 };
 
-
-
 // // GET ALL USER
 // exports.getAllUser = async (req, res) => {
 //   try {

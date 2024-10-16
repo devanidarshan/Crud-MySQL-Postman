@@ -3,8 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import Header from './Header'; 
 import SignUp from './SignUp';
 import SignIn from './SignIn';
-import GetAllProduct from './GetAllProduct';
 import AddProduct from './AddProduct';
+import GetAllProduct from './GetAllProduct';
+import GetAllCart from './GetAllCart';
 import SignOut from './SignOut';
 
 export default function Router() {
@@ -20,6 +21,7 @@ export default function Router() {
                 <Route path="/api/login-user" element={<SignIn />} />
                 <Route path="/api/add-product" element={<AddProduct role={userRole} email={userEmail}/>} />
                 <Route path="/api/get-all-product" element={<GetAllProduct role={userRole} email={userEmail} products={products} />} />
+                <Route path="/api/get-all-cart" element={<GetAllCart />} />
                 <Route path="/api/signout-user" element={<SignOut />} />
             </Routes>
         </div>

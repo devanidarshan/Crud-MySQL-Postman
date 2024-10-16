@@ -5,7 +5,7 @@ const common = require('../../../common');
 exports.getAllProduct = (req, res) => {
     const userId = req.user.userId; 
     const userRole = req.user.role; 
-    const userEmail = req.user.email; // User email ko access karen
+    const userEmail = req.user.email; 
 
     let sql;
     if (userRole === 'seller') {

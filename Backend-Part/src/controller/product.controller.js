@@ -142,9 +142,7 @@ exports.addProduct = async (req, res) => {
   }
 };
 
-
-
-  // Validation Middleware
+// Validation Middleware
 exports.validateGetAllProduct = [
     query('productId')
       .isInt().withMessage('Product ID must be an integer.')

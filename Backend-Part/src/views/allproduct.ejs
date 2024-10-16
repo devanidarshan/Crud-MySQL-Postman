@@ -123,31 +123,45 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% if (products.length > 0) { %>
-                                        <% products.forEach(product => { %>
+                                    <% if (products.length> 0) { %>
+                                        <% products.forEach(product=> { %>
                                             <tr>
-                                                <td><%= product.id %></td>
-                                                <td><%= product.name %></td>
-                                                <td><%= product.description %></td>
-                                                <td><%= product.price %></td>
                                                 <td>
-                                                    <form action="/api/add-to-cart?id=<%= product.id %>" method="POST" style="display: flex; align-items: center;">
+                                                    <%= product.id %>
+                                                </td>
+                                                <td>
+                                                    <%= product.name %>
+                                                </td>
+                                                <td>
+                                                    <%= product.description %>
+                                                </td>
+                                                <td>
+                                                    <%= product.price %>
+                                                </td>
+                                                <td>
+                                                    <form action="/api/add-to-cart?id=<%= product.id %>" method="POST"
+                                                        style="display: flex; align-items: center;">
                                                         <input type="hidden" name="productId" value="<%= product.id %>">
-                                                        <input type="text" name="name" value="<%= product.name %>" required>
-                                                        <input type="number" name="price" value="<%= product.price %>" required>
-                                                        <button type="button" onclick="decreaseQuantity(<%= product.id %>)">-</button>
-                                                        <input type="number" id="quantity-<%= product.id %>" name="quantity" class="quantity-display" value="1" required>
-                                                        <button type="button" onclick="increaseQuantity(<%= product.id %>)">+</button>
+                                                        <input type="text" name="name" value="<%= product.name %>"
+                                                            required>
+                                                        <input type="number" name="price" value="<%= product.price %>"
+                                                            required>
+                                                        <button type="button"
+                                                            onclick="decreaseQuantity(<%= product.id %>)">-</button>
+                                                        <input type="number" id="quantity-<%= product.id %>"
+                                                            name="quantity" class="quantity-display" value="1" required>
+                                                        <button type="button"
+                                                            onclick="increaseQuantity(<%= product.id %>)">+</button>
                                                         <button type="submit">Cart</button>
                                                     </form>
                                                 </td>
                                             </tr>
-                                        <% }); %>
-                                    <% } else { %>
-                                        <tr>
-                                            <td colspan="6" style="text-align: center;">Item Not Found.</td>
-                                        </tr>
-                                    <% } %>
+                                            <% }); %>
+                                                <% } else { %>
+                                                    <tr>
+                                                        <td colspan="6" style="text-align: center;">Item Not Found.</td>
+                                                    </tr>
+                                                    <% } %>
                                 </tbody>
                             </table>
 
