@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
 import Header from './Header'; 
 import SignUp from './SignUp';
 import SignIn from './SignIn';
@@ -9,9 +10,6 @@ import GetAllCart from './GetAllCart';
 import SignOut from './SignOut';
 
 export default function Router() {
-    const [userRole, setUserRole] = useState(null);
-    const [userEmail, setUserEmail] = useState(null); 
-    const [products, setProducts] = useState([]); 
 
     return (
         <div>
@@ -19,9 +17,9 @@ export default function Router() {
             <Routes>
                 <Route path="/api/register-user" element={<SignUp />} />
                 <Route path="/api/login-user" element={<SignIn />} />
-                <Route path="/api/add-product" element={<AddProduct role={userRole} email={userEmail}/>} />
-                <Route path="/api/get-all-product" element={<GetAllProduct role={userRole} email={userEmail} products={products} />} />
-                <Route path="/api/get-all-cart" element={<GetAllCart />} />
+                <Route path="/api/add-product" element={<AddProduct/>} />
+                <Route path="/api/get-all-product" element={<ProtectedRoute><GetAllProduct /> </ProtectedRoute>}/>
+                <Route path="/api/get-all-cart" element={<ProtectedRoute><GetAllCart /></ProtectedRoute>} />
                 <Route path="/api/signout-user" element={<SignOut />} />
             </Routes>
         </div>

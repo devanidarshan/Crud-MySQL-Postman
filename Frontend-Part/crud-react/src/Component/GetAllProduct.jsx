@@ -97,7 +97,7 @@ export default function GetAllProduct() {
     };
 
     return (
-        <div className="h-[860px] mx-auto p-6 bg-gray-600 rounded-lg shadow-lg">
+        <div className="h-[860px] mx-auto p-6 bg-gray-600 shadow-lg">
             <h1 className="text-3xl font-bold text-center text-gray-200 mb-10 underline underline-offset-4">Product List</h1>
 
             {loading && <div className="text-center">Loading products...</div>}

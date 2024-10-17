@@ -10,7 +10,7 @@ export default function SignUp() {
     password: '',
     role: 'None',
   });
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +33,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="flex items-center justify-center h-[820px] bg-gray-100">
+    <div className="flex items-center justify-center h-[855px] bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-6 underline underline-offset-4">Register User</h1>
         <form onSubmit={handleSubmit}>
@@ -92,11 +92,15 @@ export default function SignUp() {
             onChange={handleChange}
           />
 
-          <button className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-600 transition" type="submit">
+          <button
+            className="w-full p-2 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:from-green-500 hover:to-green-700"
+            type="submit"
+          >
             Register User
           </button>
-          <a className="block text-center text-green-500 mt-4" href="/api/login-user">Login User</a>
-        </form>
+
+          <a className="block text-center text-green-500 mt-4 hover:underline" href="/api/login-user">Login User</a>
+          </form>
       </div>
     </div>
   );
