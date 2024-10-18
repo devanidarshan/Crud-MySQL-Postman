@@ -27,7 +27,6 @@ export default function SignIn() {
                 Cookies.set("cookieData", JSON.stringify(data.data.cookieData), { expires: 5 });
                 Cookies.set("token", data.data.token, { expires: 5 });
 
-                // Check if cookieData is an empty object
                 const cookieData = JSON.parse(Cookies.get("cookieData") || '{}');
                 if (Object.keys(cookieData).length === 0) {
                     alert('Cookie data is empty. Please register.');
@@ -36,7 +35,6 @@ export default function SignIn() {
                     navigate('/api/add-product');
                 }
             } else {
-                // User not found 
                 if (data.message === 'User not found') {
                     alert('User not found. Please register.');
                     navigate('/api/register-user');
@@ -49,10 +47,9 @@ export default function SignIn() {
         }
     };
 
-
     return (
-        <div className="h-[850px] flex flex-col items-center justify-center bg-gray-100 p-5">
-            <h1 className="text-3xl font-bold text-gray-800 mb-5 underline underline-offset-4">Log In</h1>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-5 underline underline-offset-4">Log In</h1>
 
             <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
                 {error && <div className="text-red-500 mb-4 text-center">{error}</div>}

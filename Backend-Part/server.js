@@ -26,7 +26,7 @@ app.use(cors({
 // EJS TEMPLATE ENGINE
 app.set('view engine', 'ejs');
 
-// Cookie MIDDLEWARE
+// COOKIE MIDDLEWARE
 app.use(common.cookie);
 
 // SET VIEW DIRECTORY

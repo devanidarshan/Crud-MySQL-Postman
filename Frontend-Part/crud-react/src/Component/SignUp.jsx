@@ -26,16 +26,15 @@ export default function SignUp() {
       const response = await axios.post('http://localhost:7777/api/register-user', formData);
       console.log('User registered successfully:', response.data);
       navigate('/api/login-user');
-
     } catch (error) {
       console.error('Error registering user:', error);
     }
   };
 
   return (
-    <div className="flex items-center justify-center h-[855px] bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6 underline underline-offset-4">Register User</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-6 underline underline-offset-4">Register User</h1>
         <form onSubmit={handleSubmit}>
           <label className="block text-gray-700 mb-1" htmlFor="id">User ID:</label>
           <input
@@ -100,7 +99,7 @@ export default function SignUp() {
           </button>
 
           <a className="block text-center text-green-500 mt-4 hover:underline" href="/api/login-user">Login User</a>
-          </form>
+        </form>
       </div>
     </div>
   );

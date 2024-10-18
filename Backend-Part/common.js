@@ -9,7 +9,6 @@ module.exports = {
     }
 };
 
-
 module.exports = {
     cookie: async function (req, res, next) {
         console.log('Cookies:', req.cookies);

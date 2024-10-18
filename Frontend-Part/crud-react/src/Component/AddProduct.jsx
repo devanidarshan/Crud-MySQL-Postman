@@ -9,9 +9,9 @@ export default function AddProduct() {
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
     const [error, setError] = useState('');
-    const [cookieData, setCookieData] = useState(null); 
+    const [cookieData, setCookieData] = useState(null);
     const [addedProduct, setAddedProduct] = useState(null);
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     useEffect(() => {
         const cookie = Cookies.get("cookieData");
@@ -21,14 +21,13 @@ export default function AddProduct() {
             // Redirect if the user is not an admin
             if (userData.role !== 'Admin') {
                 alert("You don't have permission to add products.");
-                navigate('/api/get-all-product'); 
+                navigate('/api/get-all-product');
             }
         } else {
             alert("You Need To Login First...☠ ☠ ☠");
             navigate('/api/login-user');
         }
     }, [navigate]);
-    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -45,8 +44,8 @@ export default function AddProduct() {
                 description,
                 price,
                 quantity,
-            }, { withCredentials: true }); 
-            
+            }, { withCredentials: true });
+
             if (response.data.success) {
                 setName('');
                 setDescription('');
@@ -64,22 +63,21 @@ export default function AddProduct() {
     };
 
     return (
-        <div className="bg-gray-100 h-[830px] flex items-center justify-center p-5">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h1 className="text-3xl font-semibold text-center mb-6 underline underline-offset-4">Add Product</h1>
+        <div className="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+                <h1 className="text-2xl sm:text-3xl font-semibold text-center mb-6 underline underline-offset-4">Add Product</h1>
 
                 {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
-                {cookieData && cookieData.role && (
-                    <p className="text-center text-lg mb-4">
-                        Your Role is: <strong className="text-blue-600 underline">{cookieData.role}</strong>
-                    </p>
-                )}
-
-                {cookieData && cookieData.email && (
-                    <p className="text-center text-lg mb-4">
-                        Your Email is: <strong className="text-blue-600 underline">{cookieData.email}</strong>
-                    </p>
+                {cookieData && (
+                    <>
+                        <p className="text-center text-lg mb-4">
+                            Your Role is: <strong className="text-blue-600 underline">{cookieData.role}</strong>
+                        </p>
+                        <p className="text-center text-lg mb-4">
+                            Your Email is: <strong className="text-blue-600 underline">{cookieData.email}</strong>
+                        </p>
+                    </>
                 )}
 
                 {/* Only render the form if the user is an Admin */}
